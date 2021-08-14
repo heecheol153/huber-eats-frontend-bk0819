@@ -1,13 +1,18 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+interface IForm {
+  email: string;
+  password: string;
+}
+
 export const LoggedOutRouter = () => {
   const {
     register,
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm(); //one hook
+  } = useForm<IForm>(); //one hook
   const onSubmit = () => {
     console.log(watch());
   };
@@ -15,7 +20,7 @@ export const LoggedOutRouter = () => {
     //console.log(errors);
     console.log('cant create account');
   };
-  console.log(errors);
+  console.log(errors.email?.message);
   return (
     <div>
       <h1>Logged Out</h1>
@@ -33,6 +38,14 @@ export const LoggedOutRouter = () => {
             required
             placeholder='email'
           />
+          {errors.email?.message && (
+            <span className='font-bold text-red-600'>
+              {errors.email?.message}
+            </span>
+          )}
+          {errors.email?.type === 'pattern' && (
+            <span className='font-bold text-red-600'>Only gmail allowed</span>
+          )}
         </div>
         <div>
           <input
